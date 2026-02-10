@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface NoteRepository extends JpaRepository<Note, Long> {
 
-        Optional<Note> findByTitleIgnoreCase(String titleName);
+        Optional<Note> findByTitleIgnoreCase(String title);
 
 }
