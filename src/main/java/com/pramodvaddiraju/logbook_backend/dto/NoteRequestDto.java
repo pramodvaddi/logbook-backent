@@ -14,7 +14,7 @@ public class NoteRequestDto {
     private String title;
     @NotBlank(message = "content must not be null")
     private String content;
-    @NotNull(message = "Date and time must not be null")
+
     private LocalDateTime createdAt;
 
     public NoteRequestDto(){
