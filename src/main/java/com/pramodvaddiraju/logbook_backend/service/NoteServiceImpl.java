@@ -6,6 +6,8 @@ import com.pramodvaddiraju.logbook_backend.entity.Note;
 import com.pramodvaddiraju.logbook_backend.exception.ResourceNotFoundException;
 import com.pramodvaddiraju.logbook_backend.repository.NoteRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @Service
 public class NoteServiceImpl implements NoteService{
 
+    private static final Logger log = LoggerFactory.getLogger(NoteServiceImpl.class);
     private NoteRepository noteRepository;
     private ModelMapper modelMapper;
 
@@ -49,9 +52,14 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public NoteResponseDto getNoteById(Long id) {
+        log.debug("Fetching note with id = {}", id);
         Note note = noteRepository.findById(id)
-                .orElseThrow(() ->new ResourceNotFoundException("Not found with id: " + id));
+                .orElseThrow(()-> {
+                    log.warn("Note not found with id = {}", id);
+                    return new ResourceNotFoundException("Note not found with id: " + id);
+                });
 
+        log.info("Note successfully fetched with id = {} ", id);
         return modelMapper.map(note, NoteResponseDto.class);
 
     }

@@ -4,14 +4,19 @@ import com.pramodvaddiraju.logbook_backend.dto.NoteRequestDto;
 import com.pramodvaddiraju.logbook_backend.dto.NoteResponseDto;
 import com.pramodvaddiraju.logbook_backend.service.NoteService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/notes")
 public class NoteController {
+
+    private static final Logger log = LoggerFactory.getLogger(NoteController.class);
+
 
     private NoteService noteService;
 
@@ -21,6 +26,7 @@ public class NoteController {
 
     @PostMapping
     ResponseEntity<NoteResponseDto> saveNote(@Valid @RequestBody NoteRequestDto noteRequestDto){
+        log.info("Create note request received with title = {}" , noteRequestDto.getTitle());
         return ResponseEntity.status(201)
                 .body(noteService.createNote(noteRequestDto));
     }
